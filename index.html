@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071326">
+<title>SpeedTest — Internet Speed Test</title>
+<style>
+:root{color-scheme:dark;--bg:#061020;--panel:#0a1930;--line:#193557;--blue:#258cff;--cyan:#13d5e8;--text:#f4f8ff;--muted:#93afd2}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#10274a 0%,var(--bg) 58%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+header{height:78px;border-bottom:1px solid #142944;background:#071326dd;display:flex;align-items:center;justify-content:space-between;padding:0 max(4.5%,calc((100% - 1440px)/2))}
+.brand{display:flex;align-items:center;gap:14px;font-weight:800;font-size:29px;letter-spacing:-1px}.brand svg{width:48px;height:48px;color:var(--blue)}.brand span span{color:var(--blue)}
+nav{display:flex;gap:26px;color:var(--muted);font-size:14px}nav a{color:inherit;text-decoration:none}nav a:hover{color:white}
+main{max-width:1440px;margin:auto;padding:28px 3.2% 24px}.intro{text-align:center;margin:0 auto 25px}.intro h1{font-size:clamp(30px,4vw,46px);margin:0 0 8px;letter-spacing:-1.3px}.intro .sub{font-size:clamp(16px,2vw,23px);color:#b2c8e7;margin:0 0 12px}.intro .desc{color:var(--muted);line-height:1.6;margin:0;font-size:15px}
+.layout{display:grid;grid-template-columns:minmax(0,2.15fr) minmax(270px,.78fr);gap:22px}.panel{border:1px solid var(--line);background:linear-gradient(145deg,#0a1930eF,#061225f2);border-radius:17px;box-shadow:0 12px 36px #0002}.main-panel{padding:18px}.metadata{display:grid;grid-template-columns:minmax(0,2fr) minmax(130px,.8fr) minmax(130px,.8fr);border:1px solid #1a3454;border-radius:15px;background:#0c1b31;padding:15px 17px;gap:15px}.meta{display:flex;align-items:center;gap:13px;min-width:0}.meta+.meta{border-left:1px solid #1a3454;padding-left:18px}.ico{font-size:27px;color:var(--blue);font-weight:700}.meta small{display:block;color:var(--muted);font-size:13px;margin-bottom:5px}.meta strong{font-size:15px}.url{overflow-wrap:anywhere;font-size:13px!important;font-weight:500}
+.measure{display:grid;grid-template-columns:1.15fr 1fr;align-items:center;padding:18px 8px 4px}.gauge-wrap{text-align:center;padding:0 18px}.gauge{width:min(100%,370px);height:auto;display:block;margin:auto}.gauge-track{fill:none;stroke:#1b3150;stroke-width:15;stroke-linecap:round}.gauge-value{fill:none;stroke:url(#grad);stroke-width:15;stroke-linecap:round;transition:stroke-dashoffset .3s}.speed-number{font-size:43px;font-weight:750;fill:var(--text);text-anchor:middle}.speed-unit{font-size:20px;fill:#9bb8de;text-anchor:middle}.under-gauge{color:#32a8ff;font-size:14px;margin-top:-8px}.stats{border-left:1px solid #1b3556;padding:0 18px 0 32px}.stat{padding:15px 0;border-bottom:1px solid #1a3454;display:flex;align-items:flex-start;gap:15px}.stat:last-child{border:0}.stat .sym{background:#102440;color:#39a0ff;border-radius:50%;width:36px;height:36px;display:grid;place-items:center;font-size:19px;flex-shrink:0}.stat small{display:block;color:var(--muted);font-size:13px;margin:0 0 6px}.stat strong{font-size:22px;letter-spacing:-.4px}.stat:last-child strong{color:#3b9cff}
+.actions{display:flex;justify-content:center;gap:12px;margin:14px 0 4px;flex-wrap:wrap}.btn{border:0;border-radius:999px;background:linear-gradient(100deg,#1686ff,#10cde3);color:white;font-size:15px;font-weight:750;padding:13px 28px;cursor:pointer;box-shadow:0 7px 20px #1686ff25}.btn:hover{filter:brightness(1.1)}.btn:disabled{opacity:.55;cursor:wait}.btn.secondary{background:#142943;border:1px solid #284668;box-shadow:none;color:#c4d8f4}.status{text-align:center;color:var(--muted);font-size:13px;min-height:20px;margin:8px 0 0}
+.how{padding:25px 27px}.how h2{font-size:20px;margin:0 0 23px;display:flex;gap:13px;align-items:center}.how h2 span{color:var(--blue)}.step{display:flex;gap:17px;margin:0 0 24px;color:var(--muted);line-height:1.55;font-size:15px}.num{flex:0 0 35px;height:35px;border-radius:50%;background:linear-gradient(135deg,#2c9dff,#0874ed);display:grid;place-items:center;color:white;font-size:17px;font-weight:750}.powered{border-top:1px solid #1a3454;padding-top:19px;display:flex;gap:12px;align-items:center;color:var(--muted);font-size:14px}.cloud{font-size:29px;color:#288cff}
+.live{margin-top:22px;padding:23px 24px 25px}.live h2{margin:0 0 23px;font-size:19px;display:flex;gap:12px;align-items:center}.live h2 span{color:var(--blue)}.progress-grid{display:grid;grid-template-columns:repeat(8,1fr)}.tick{text-align:center;padding:0 6px;border-right:1px solid #1a3454}.tick:last-child{border:0}.tick small{display:block;color:var(--muted);margin-bottom:8px}.tick strong{font-size:15px;white-space:nowrap}.tick .bar{height:4px;background:#132b49;border-radius:4px;margin-top:10px;overflow:hidden}.tick .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .2s}
+footer{text-align:center;color:#7e9ec6;padding:25px 10px 10px;font-size:14px}footer b{color:#9fc8fa;font-weight:500}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.how{padding:22px}.how .step-list{display:grid;grid-template-columns:1fr 1fr;gap:0 15px}.measure{grid-template-columns:1fr 1fr}.metadata{grid-template-columns:1.5fr 1fr 1fr}}
+@media(max-width:620px){header{height:67px;padding:0 17px}.brand{font-size:23px;gap:8px}.brand svg{width:37px;height:37px}nav{gap:12px;font-size:12px}nav a:nth-child(2){display:none}main{padding:24px 14px}.intro{margin-bottom:21px}.intro .desc{font-size:13px}.main-panel{padding:12px}.metadata{grid-template-columns:1fr 1fr;padding:12px;gap:12px}.meta:first-child{grid-column:1/-1}.meta+.meta{border-left:0;padding-left:0}.meta:nth-child(3){border-left:1px solid #1a3454;padding-left:12px}.measure{grid-template-columns:1fr;padding:12px 0}.gauge-wrap{max-width:350px;margin:auto;width:100%}.stats{border-left:0;border-top:1px solid #1b3556;padding:8px 12px 0;display:grid;grid-template-columns:1fr 1fr;gap:0 15px}.stat{padding:13px 0}.stat strong{font-size:18px}.stat .sym{width:30px;height:30px}.how .step-list{grid-template-columns:1fr}.live{padding:18px 12px;overflow:hidden}.progress-grid{grid-template-columns:repeat(4,1fr);row-gap:20px}.tick:nth-child(4){border-right:0}.tick strong{font-size:13px}.how{padding:20px}.actions .btn{flex:1;padding:12px 15px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M5 17C16 7 32 7 43 17M11 25c8-7 18-7 26 0M18 33c4-3 8-3 12 0" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/><circle cx="24" cy="41" r="3" fill="currentColor"/></svg><span>Speed<span>Test</span></span></div>
+  <nav><a href="#home">⌂ &nbsp;Home</a><a href="#how">ⓘ &nbsp;About</a><a href="#settings" id="settingsLink">⚙ &nbsp;Settings</a></nav>
+</header>
+<main id="home">
+  <section class="intro"><h1>Internet Speed Test</h1><p class="sub">Measure your download speed with multiple connections.</p><p class="desc">This tool downloads data from a fast global server (Cloudflare) for a few seconds<br class="desktop-break"> and calculates your average download speed in Mbps.</p></section>
+  <div class="layout">
+    <section class="panel main-panel">
+      <div class="metadata">
+        <div class="meta"><span class="ico">↗</span><div><small>Test URL</small><strong class="url">https://speed.cloudflare.com/__down?bytes=100000000</strong></div></div>
+        <div class="meta"><span class="ico">♣</span><div><small>Connections</small><strong>4</strong></div></div>
+        <div class="meta"><span class="ico">◷</span><div><small>Duration</small><strong>8 seconds</strong></div></div>
+      </div>
+      <div class="measure">
+        <div class="gauge-wrap">
+          <svg class="gauge" viewBox="0 0 300 255" role="img" aria-label="Download speed meter">
+            <defs><linearGradient id="grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1486ff"/><stop offset="100%" stop-color="#16d5e5"/></linearGradient></defs>
+            <path class="gauge-track" d="M48 207 A112 112 0 1 1 252 207" pathLength="100" stroke-dasharray="78 22"/>
+            <path id="gaugeValue" class="gauge-value" d="M48 207 A112 112 0 1 1 252 207" pathLength="100" stroke-dasharray="0 100"/>
+            <text id="speedNumber" class="speed-number" x="150" y="142">0.0</text><text class="speed-unit" x="150" y="173">Mbps</text>
+          </svg>
+          <div class="under-gauge">⇩ &nbsp;Average Download Speed</div>
+          <div class="actions"><button class="btn" id="startBtn">▶ &nbsp; Start Test</button><button class="btn secondary" id="resetBtn">↻ &nbsp; Reset</button></div>
+          <p class="status" id="status" aria-live="polite">Ready when you are.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="sym">ϟ</span><div><small>Total Data Downloaded</small><strong id="totalData">0 MB</strong></div></div>
+          <div class="stat"><span class="sym">◴</span><div><small>Test Duration</small><strong id="duration">0.0 seconds</strong></div></div>
+          <div class="stat"><span class="sym">▥</span><div><small>Average Speed</small><strong id="averageSpeed">0.0 Mbps</strong></div></div>
+        </div>
+      </div>
+    </section>
+    <aside class="panel how" id="how">
+      <h2><span>ⓘ</span> How It Works</h2>
+      <div class="step-list">
+        <div class="step"><span class="num">1</span><span>Opens multiple parallel connections (4 in this test).</span></div>
+        <div class="step"><span class="num">2</span><span>Downloads data for a fixed time (8 seconds).</span></div>
+        <div class="step"><span class="num">3</span><span>Calculates the total bytes received.</span></div>
+        <div class="step"><span class="num">4</span><span>Shows the average download speed in Mbps.</span></div>
+      </div>
+      <div class="powered"><span class="cloud">☁</span><div>Powered by Cloudflare<br><small>Fast &nbsp;·&nbsp; Reliable &nbsp;·&nbsp; Global</small></div></div>
+    </aside>
+  </div>
+  <section class="panel live"><h2><span>▥</span> Live Progress</h2><div class="progress-grid" id="progressGrid"></div></section>
+  <footer>〈/〉 &nbsp; Created from your Java code &nbsp; | &nbsp; <b>Simple</b> &nbsp;·&nbsp; <b>Fast</b> &nbsp;·&nbsp; <b>Accurate</b></footer>
+</main>
+<script>
+(() => {
+  const URL_BASE = "https://speed.cloudflare.com/__down?bytes=100000000";
+  const CONNECTIONS = 4, DURATION = 8;
+  const $ = id => document.getElementById(id);
+  let running = false, controller = null, runId = 0, totalBytes = 0, startTime = 0, interval = null;
+  const samples = Array(DURATION).fill(null);
+  const grid = $("progressGrid");
+  for (let i=0;i<DURATION;i++) {
+    const el = document.createElement("div"); el.className="tick";
+    el.innerHTML = `<small>${i+1}s</small><strong id="tick${i}">—</strong><div class="bar"><i id="bar${i}"></i></div>`;
+    grid.appendChild(el);
+  }
+  function displaySpeed(mbps) {
+    $("speedNumber").textContent = mbps.toFixed(1);
+    $("averageSpeed").textContent = `${mbps.toFixed(1)} Mbps`;
+    $("gaugeValue").setAttribute("stroke-dasharray", `${Math.min(100, Math.max(0, mbps / 500 * 100))} 100`);
+  }
+  function resetUI() {
+    totalBytes=0; samples.fill(null); displaySpeed(0);
+    $("totalData").textContent="0 MB"; $("duration").textContent="0.0 seconds";
+    for(let i=0;i<DURATION;i++){ $(`tick${i}`).textContent="—"; $(`bar${i}`).style.width="0%"; }
+  }
+  function stopRequests() { if(controller) controller.abort(); }
+  async function worker(id, myRun) {
+    const bufferSize = 64 * 1024;
+    while (running && myRun === runId && performance.now() - startTime < DURATION*1000) {
+      try {
+        const url = `${URL_BASE}&r=${Date.now()}-${id}-${Math.random()}`;
+        const response = await fetch(url, {cache:"no-store", signal:controller.signal});
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.body) throw new Error("This browser does not support streaming downloads.");
+        const reader = response.body.getReader();
+        try {
+          while (running && myRun === runId && performance.now()-startTime < DURATION*1000) {
+            const {done,value} = await reader.read();
+            if(done) break;
+            totalBytes += value.byteLength;
+          }
+        } finally { try { await reader.cancel(); } catch(_) {} }
+      } catch(e) {
+        if (e.name === "AbortError" || !running || myRun !== runId) break;
+        $("status").textContent = "Network request issue — retrying if time remains.";
+        await new Promise(resolve=>setTimeout(resolve,180));
+      }
+    }
+  }
+  function start() {
+    if(running) return;
+    resetUI(); running=true; runId++; const myRun=runId;
+    controller=new AbortController(); startTime=performance.now();
+    $("startBtn").disabled=true; $("startBtn").textContent="Testing…";
+    $("status").textContent="Testing download speed… keep this tab open.";
+    const tasks=Array.from({length:CONNECTIONS},(_,i)=>worker(i,myRun));
+    interval=setInterval(()=>{
+      if(!running || myRun!==runId) return;
+      const elapsed=Math.min(DURATION,(performance.now()-startTime)/1000);
+      const mbps=elapsed>0 ? totalBytes*8/1e6/elapsed : 0;
+      displaySpeed(mbps); $("totalData").textContent=`${(totalBytes/1e6).toFixed(1)} MB`;
+      $("duration").textContent=`${elapsed.toFixed(1)} seconds`;
+      const second=Math.min(DURATION-1,Math.floor(elapsed));
+      for(let i=0;i<second;i++) if(samples[i]===null) samples[i]=null;
+      if(second>=0 && elapsed>0){
+        const oldBytes = window.__lastTickBytes || 0;
+        const oldSec = window.__lastTickSecond;
+        if(oldSec !== second){
+          window.__lastTickBytes=totalBytes; window.__lastTickSecond=second;
+        }
+        const perSec=(totalBytes-oldBytes)*8/1e6;
+        samples[second]=perSec;
+        $(`tick${second}`).textContent=`${Math.max(0,perSec).toFixed(1)} Mbps`;
+        $(`bar${second}`).style.width=`${Math.min(100,Math.max(0,perSec/500*100))}%`;
+      }
+      if(elapsed>=DURATION) finish(myRun,tasks);
+    },180);
+    window.__lastTickBytes=0; window.__lastTickSecond=-1;
+  }
+  async function finish(myRun,tasks) {
+    if(!running || myRun!==runId) return;
+    running=false; clearInterval(interval); stopRequests();
+    await Promise.allSettled(tasks);
+    const seconds=Math.min(DURATION,(performance.now()-startTime)/1000);
+    const mbps=seconds>0?totalBytes*8/1e6/seconds:0;
+    displaySpeed(mbps); $("totalData").textContent=`${(totalBytes/1e6).toFixed(1)} MB`;
+    $("duration").textContent=`${seconds.toFixed(1)} seconds`;
+    $("status").textContent=totalBytes ? "Test complete!" : "No data received. Check your connection and try again.";
+    $("startBtn").disabled=false; $("startBtn").textContent="↻  Test Again";
+  }
+  $("startBtn").addEventListener("click",start);
+  $("resetBtn").addEventListener("click",()=>{
+    runId++; running=false; clearInterval(interval); stopRequests(); resetUI();
+    $("startBtn").disabled=false; $("startBtn").textContent="▶  Start Test"; $("status").textContent="Ready when you are.";
+  });
+  $("settingsLink").addEventListener("click",e=>{
+    e.preventDefault(); alert("Test settings: 4 parallel connections · 8 seconds · Cloudflare download endpoint.");
+  });
+})();
+</script>
+</body>
+</html>
